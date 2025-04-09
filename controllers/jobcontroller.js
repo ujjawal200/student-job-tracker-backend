@@ -22,8 +22,31 @@ const getJobs = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+const updateJobStatus = async (req, res) => {
+  try {
+    const updated = await Job.findByIdAndUpdate(
+      req.params.id,
+      { status: req.body.status },
+      { new: true }
+    );
+    res.json(updated);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+const deleteJob = async (req, res) => {
+  try {
+    await Job.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Job deleted successfully' });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
 
 module.exports = {
   createJob,
   getJobs,
+  updateJobStatus,
+  deleteJob,
 };
