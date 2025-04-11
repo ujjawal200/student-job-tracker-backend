@@ -17,19 +17,16 @@ app.use(express.json()); // parse incoming JSON data
 // Routes
 app.use('/api/jobs', jobRoutes);
 
-// Connect to MongoDB and start server
+// ✅ FIXED: Use Render's dynamic PORT
 const PORT = process.env.PORT || 5000;
-mongoose.connect(process.env.MONGO_URI, {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-})
-.then(() => {
-  console.log('✅ Connected to MongoDB');
-  app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
-  
-})
-.catch((err) => {
-  console.error('❌ Error connecting to MongoDB:', err.message);
-});
 
-
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log('✅ Connected to MongoDB');
+    app.listen(PORT, () =>
+      console.log(`🚀 Server running on port ${PORT}`)
+    );
+  })
+  .catch((err) => {
+    console.error('❌ Error connecting to MongoDB:', err.message);
+  });
